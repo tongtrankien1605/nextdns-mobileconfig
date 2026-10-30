@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>nextDNS MobileConfig Web Clip by Tống Trần Kiên</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f6f8;
+      padding: 40px;
+      max-width: 700px;
+      margin: auto
+    }
+
+    h2 {
+      text-align: center
+    }
+
+    label {
+      font-weight: bold
+    }
+
+    .input-group {
+      position: relative;
+      margin-top: 5px;
+      margin-bottom: 5px
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 35px 10px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box
+    }
+
+    .clear-btn {
+      position: absolute;
+      right: 8px;
+      top: 35%;
+      transform: translateY(-50%);
+      background: #ddd;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      line-height: 20px;
+      padding: 0
+    }
+
+    /* clear-btn hover */
+    .clear-btn:hover {
+      color: white;
+      transform: translateY(-50%) scale(1.2);
+    }
+
+    /* clear-btn click */
+    .clear-btn:active {
+      transform: translateY(-50%) scale(1.5);
+      background: #d9363e;
+    }
+
+    .error {
+      color: rgb(173, 11, 138);
+      font-size: 13px;
+      margin-bottom: 10px
+    }
+
+    button {
+      padding: 10px 16px;
+      margin: 5px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold
+    }
+
+    /* copy hover */
+    .copy:hover {
+      background-color: rgb(186, 119, 119);
+
+    }
+
+    /* copy click */
+    .copy:active {
+
+      background: red;
+    }
+
+    /* generate hover */
+    .generate:hover {
+      background-color: rgb(186, 119, 119);
+
+    }
+
+    /* generate click */
+    .generate:active {
+
+      background: red;
+    }
+
+    /* download hover */
+    .download:hover {
+      background-color: rgb(186, 119, 119);
+
+    }
+
+    /* download click */
+    .download:active {
+
+      background: red;
+    }
+
+    .generate {
+      background: #2ecc71;
+      color: white
+    }
+
+    .download {
+      background: #3498db;
+      color: white
+    }
+
+    .copy {
+      background: #555;
+      color: white
+    }
+
+    textarea {
+      width: 100%;
+      height: 400px;
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc
+    }
+
+    .required {
+      color: red
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>nextDNS MobileConfig Web Clip by Tống Trần Kiên</h2>
+
+  <div class="nav-buttons" style="text-align: center;">
+    <button class="btn-nav" style="background-color: rgb(15, 151, 175);" onclick="window.location.href='index.html'">←
+      No Web Clip</button>
+    <!-- <button class="btn-nav" style="background-color: rgb(34, 197, 99);" onclick="window.location.href='/index-web-clip.html'">→ Web Clip</button> -->
+  </div>
+
+  <label>NextDNS ID <span class="required">*</span></label>
+  <div class="input-group">
+    <input id="dnsid" placeholder="c8aa33">
+    <button class="clear-btn" onclick="clearInput('dnsid')">✕</button>
+  </div>
+  <div class="error" id="e1"></div>
+
+  <label>DNS Servers IP 1 <span class="required">*</span></label>
+  <div class="input-group">
+    <input id="ip1" placeholder="45.90.28.218">
+    <button class="clear-btn" onclick="clearInput('ip1')">✕</button>
+  </div>
+  <div class="error" id="e2"></div>
+
+  <label>DNS Servers IP 2 <span class="required">*</span></label>
+  <div class="input-group">
+    <input id="ip2" placeholder="45.90.30.218">
+    <button class="clear-btn" onclick="clearInput('ip2')">✕</button>
+  </div>
+  <div class="error" id="e3"></div>
+
+  <label>acc ( email ) <span class="required">*</span></label>
+  <div class="input-group">
+    <input id="email" placeholder="ttk-nextdns-01@tongtrankien.io.vn">
+    <button class="clear-btn" onclick="clearInput('email')">✕</button>
+  </div>
+  <div class="error" id="e4"></div>
+
+  <label>File name download (optional)</label>
+  <div class="input-group">
+    <input id="filename" placeholder="LocketGold_01_by_TongTranKien">
+    <button class="clear-btn" onclick="clearInput('filename')">✕</button>
+  </div>
+
+  <br><br>
+
+  <button class="copy" onclick="copyText('ttk-nextdns-01@tongtrankien.io.vn')">Copy mail [
+    ttk-nextdns-01@tongtrankien.io.vn ]</button>
+  <button class="copy" onclick="copyText('LocketGold_01_by_TongTranKien')">Copy name [ LocketGold_01_by_TongTranKien
+    ]</button>
+
+  <br><br>
+
+  <button class="generate" onclick="generate()">Generate Data</button>
+  <button class="download" onclick="downloadFile()">Download File</button>
+  <button class="copy" onclick="copyText('revenuecat.com')">Copy [revenuecat.com]</button>
+  <button class="copy" onclick="copyText('*.api.revenuecat.com')"> Copy [ *.api.revenuecat.com ]</button>
+
+  <br> <br>
+
+  <textarea id="output"></textarea>
+
+  <script>
+
+    const ICON_BASE64 = `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`;
+
+    function uuid() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8)
+        return v.toString(16)
+      })
+    }
+
+    function clearInput(id) {
+      document.getElementById(id).value = ""
+    }
+
+    function validate() {
+
+      let ok = true
+
+      let ip1 = document.getElementById("ip1").value.trim()
+      let ip2 = document.getElementById("ip2").value.trim()
+      let dnsid = document.getElementById("dnsid").value.trim()
+      let email = document.getElementById("email").value.trim()
+
+      document.getElementById("e1").innerText = ""
+      document.getElementById("e2").innerText = ""
+      document.getElementById("e3").innerText = ""
+      document.getElementById("e4").innerText = ""
+
+      if (!dnsid) { document.getElementById("e1").innerText = "NextDNS ID không được để trống"; ok = false }
+      if (!ip1) { document.getElementById("e2").innerText = "DNS Servers IP 1 không được để trống"; ok = false }
+      if (!ip2) { document.getElementById("e3").innerText = "DNS Servers IP 2 không được để trống"; ok = false }
+      if (!email) { document.getElementById("e4").innerText = "acc ( email ) không được để trống"; ok = false }
+
+      return ok
+    }
+
+    function generate() {
+
+      if (!validate()) return
+
+      let ip1 = document.getElementById("ip1").value
+      let ip2 = document.getElementById("ip2").value
+      let dnsid = document.getElementById("dnsid").value
+      let email = document.getElementById("email").value
+
+      let username = email.split("@")[0]
+
+      let uuid1 = uuid()
+      let uuid2 = uuid()
+      let uuid3 = uuid()
+
+      let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>PayloadContent</key>
+    <array>
+
+      <!-- ================= DNS ================= -->
+      <dict>
+        <key>DNSSettings</key>
+        <dict>
+          <key>DNSProtocol</key>
+          <string>HTTPS</string>
+          <key>ServerAddresses</key>
+          <array>
+            <string>${ip1}</string>
+            <string>${ip2}</string>
+            <string>2a07:a8c0::</string>
+            <string>2a07:a8c1::</string>
+          </array>
+          <key>ServerName</key>
+          <string>${dnsid}.dns.nextdns.io</string>
+          <key>ServerURL</key>
+          <string>https://dns.nextdns.io/${dnsid}</string>
+        </dict>
+
+        <key>OnDemandRules</key>
+        <array>
+          <dict>
+            <key>Action</key>
+            <string>Connect</string>
+            <key>InterfaceTypeMatch</key>
+            <string>WiFi</string>
+          </dict>
+          <dict>
+            <key>Action</key>
+            <string>Connect</string>
+            <key>InterfaceTypeMatch</key>
+            <string>Cellular</string>
+          </dict>
+          <dict>
+            <key>Action</key>
+            <string>Connect</string>
+          </dict>
+        </array>
+
+        <key>PayloadDescription</key>
+        <string>Configures device to use Locket Gold Encrypted DNS over HTTPS</string>
+
+        <key>PayloadDisplayName</key>
+        <string>Locket Gold By Tong Tran Kien</string>
+
+        <key>PayloadIdentifier</key>
+        <string>${username}.locketgold.dns.managed</string>
+
+        <key>PayloadType</key>
+        <string>com.apple.dnsSettings.managed</string>
+
+        <key>PayloadUUID</key>
+        <string>${uuid1}</string>
+
+        <key>PayloadVersion</key>
+        <integer>1</integer>
+
+        <key>ProhibitDisablement</key>
+        <false/>
+      </dict>
+
+
+      <!-- ================= WEB CLIP ================= -->
+      <dict>
+        <key>PayloadType</key>
+        <string>com.apple.webClip.managed</string>
+
+        <key>PayloadVersion</key>
+        <integer>1</integer>
+
+        <key>PayloadIdentifier</key>
+        <string>${username}.locketgold.webclip</string>
+
+        <key>PayloadUUID</key>
+        <string>${uuid3}</string>
+
+        <key>PayloadDisplayName</key>
+        <string>Website của Tống Trần Kiên</string>
+
+        <key>Label</key>
+        <string>Locket Gold TTK</string>  
+
+        <key>URL</key>
+        <string>https://tongtrankien.io.vn</string>
+
+        <key>IsRemovable</key>
+        <false/>
+
+        <key>FullScreen</key>
+        <true/>
+
+        <key>Precomposed</key>
+        <true/>
+
+        <key>Icon</key>
+        <data>
+${ICON_BASE64}
+        </data>
+      </dict>
+
+    </array>
+
+    <!-- ================= ROOT ================= -->
+    <key>PayloadDescription</key>
+    <string>
+--- Cấu hình DNS giữ Locket Gold ---
+acc: ${email}
+Coder: Tống Trần Kiên
+Website: tongtrankien.io.vn
+Donate: 1989.339.485 - Vietcombank
+Email: tongtrankien1605@gmail.com
+</string>
+
+    <key>PayloadDisplayName</key>
+    <string>Locket Gold by Tống Trần Kiên</string>
+
+    <key>PayloadIdentifier</key>
+    <string>${username}.locketgold.config</string>
+
+    <key>PayloadOrganization</key>
+    <string>Tống Trần Kiên - 03/07/2004</string>
+
+    <key>PayloadRemovalDisallowed</key>
+    <false/>
+
+    <key>PayloadType</key>
+    <string>Configuration</string>
+
+    <key>PayloadUUID</key>
+    <string>${uuid2}</string>
+
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+
+  </dict>
+</plist>`
+
+      document.getElementById("output").value = xml
+
+    }
+
+    function downloadFile() {
+
+      let xml = document.getElementById("output").value
+      if (!xml) { alert("Generate first"); return }
+
+      let filename = document.getElementById("filename").value
+      let email = document.getElementById("email").value
+
+      if (!filename) {
+        filename = email.split("@")[0]
+      }
+
+      let blob = new Blob([xml], { type: "text/xml" })
+      let a = document.createElement("a")
+      a.href = URL.createObjectURL(blob)
+      a.download = filename + ".mobileconfig"
+      a.click()
+
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text)
+      alert("Copied: " + text)
+    }
+
+  </script>
+
+</body>
+
+</html>
